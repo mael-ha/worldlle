@@ -48,6 +48,8 @@ gem 'dotenv-rails'
 gem 'httparty'
 gem 'ruby-openai'
 gem 'news-api'
+gem 'koala'
+gem 'open-uri'
 
 # Use Sass to process CSS
 # gem "sassc-rails"

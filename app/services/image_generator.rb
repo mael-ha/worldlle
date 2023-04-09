@@ -19,6 +19,7 @@ class ImageGenerator
     generate_world_story
     generate_image_prompt
     generate_image
+    @world_summary
   end
   
   def generate_world_story
@@ -34,7 +35,7 @@ class ImageGenerator
   end
 
   def generate_image(prompt)
-    gpt_image_prompt = "You are a modern digital artist using AI to express your ideas. You get your inspiration from a story wrote by a friend. I am this friend. Your main tool is Dall·e from OpenAI, your are the world expert using it. Everyday, you create a prompt out of story that I wrote, to generates a beautiful realistic digital art image. Here is today's story: #{@story}. Generate the prompt for dall·e."
+    gpt_image_prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Imagine today's scene, with a maximum of 980 characters."
     response = @openai.completions(
         engine: "davinci",
         prompt: gpt_image_prompt,

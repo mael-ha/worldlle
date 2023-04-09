@@ -15,6 +15,7 @@ class NewsFetcher
 
     def call
         fetch_headlines
+        @top_keywords
     end
 
     def fetch_headlines
@@ -24,7 +25,6 @@ class NewsFetcher
             keywords = extract_keywords(headlines)
             @top_keywords += keywords
         end
-        @top_keywords
     end
 
     def extract_keywords(headlines)
