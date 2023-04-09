@@ -132,10 +132,10 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
+    news-api (0.2.0)
     nio4r (2.5.9)
     nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
-    openai (0.3.0)
     pg (1.4.6)
     public_suffix (5.0.1)
     puma (5.6.5)
@@ -176,6 +176,8 @@ GEM
     reline (0.3.3)
       io-console (~> 0.5)
     rexml (3.2.5)
+    ruby-openai (3.5.0)
+      httparty (>= 0.18.1)
     rubyzip (2.3.2)
     selenium-webdriver (4.8.6)
       rexml (~> 3.2, >= 3.2.5)
@@ -228,11 +230,12 @@ DEPENDENCIES
   httparty
   importmap-rails
   jbuilder
-  openai
+  news-api
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)
   redis (~> 4.0)
+  ruby-openai
   selenium-webdriver
   sprockets-rails
   stimulus-rails
