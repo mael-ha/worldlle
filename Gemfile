@@ -50,6 +50,7 @@ gem 'ruby-openai'
 gem 'news-api'
 gem 'koala'
 gem 'open-uri'
+gem 'twitter'
 
 # Use Sass to process CSS
 # gem "sassc-rails"

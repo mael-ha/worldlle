@@ -2,6 +2,7 @@
 
 require 'koala'
 require 'open-uri'
+require 'twitter'
 
 class SocialPoster
     def initialize(world_summary_id)
@@ -15,17 +16,33 @@ class SocialPoster
     end
 
     def call
-        #download_image
-        post_to_instagram
-        #post_to_twitter
+        download_image
+        #post_to_instagram
+        post_to_twitter
+        delete_image
     end
 
     def download_image
-        image_data = open(@image_url).read
-        File.open('worldlle_tmp.jpg', 'wb') do |file|
+        image_data = URI.open(@image_url).read
+        File.open('tmp/worldlle_tmp.jpg', 'wb') do |file|
             file.write(image_data)
         end
     end
+
+    def post_to_twitter
+        # Upload the image to Twitter
+        # Post the tweet with the image and prompt as the text
+        begin
+            tweet = TwitterClient.update_with_media("[#{@date}] - #{@caption}", File.new('tmp/worldlle_tmp.jpg'))
+        rescue Twitter::Error => e
+            puts "Error posting to Twitter: #{e}"
+        end
+    end
+
+    def delete_image
+        File.delete('tmp/worldlle_tmp.jpg')
+    end
+
   
     def post_to_instagram
     # Upload the image to the Instagram Creator account's media container

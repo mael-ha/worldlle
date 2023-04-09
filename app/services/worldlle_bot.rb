@@ -14,5 +14,6 @@ class WorldlleBot
         puts "   Posting on social media..."
         SocialPoster.new(world_summary.id).call
         finish = DateTime.now
+        puts "Finished in #{finish - start} seconds."
     end
 end

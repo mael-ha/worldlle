@@ -29,10 +29,9 @@ class ImageGenerator
         parameters: {
             model: "text-davinci-003",
             prompt: prompt,
-            temperature: 0.9,
+            temperature: 0.8,
             max_tokens: 500,
         })
-    debugger
     @story = response.dig("choices", 0, "text").strip
     @world_summary.update!(story: @story)
   end
@@ -40,15 +39,14 @@ class ImageGenerator
   def generate_image_prompt
     return if @world_summary.image_prompt.present?
 
-    prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Describe the scene you imagine based on today's story, with a maximum of 980 characters. Be very descriptive, the more details you give, the better the AI will be able to create a realistic image."
+    prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Describe the scene you imagine based on today's story, with a maximum of 260 characters. Be very descriptive, give a lot of details, and describe the scene as if you were there, it has to be ultra realistic."
     response = @openai.completions(
         parameters: {
             model: "text-davinci-003",
             prompt: prompt,
-            temperature: 0.9,
+            temperature: 0.8,
             max_tokens: 500,
         })
-    debugger
     @image_prompt = response.dig("choices", 0, "text").strip
     @world_summary.update!(image_prompt: @image_prompt)
   end
