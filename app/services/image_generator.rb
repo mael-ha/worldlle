@@ -39,7 +39,7 @@ class ImageGenerator
   def generate_image_prompt
     return if @world_summary.image_prompt.present?
 
-    prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Describe the scene you imagine based on today's story, with a maximum of 260 characters. Be very descriptive, give a lot of details, and describe the scene as if you were there, it has to be ultra realistic."
+    prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Depict an ultra realistic scene based on today's story, with a maximum of 260 characters. Describe the scene as if you were there. Be very descriptive about what you see, give a lot of details. Add adjectives to make sure it is ultra realistic."
     response = @openai.completions(
         parameters: {
             model: "text-davinci-003",

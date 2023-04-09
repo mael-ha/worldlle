@@ -51,6 +51,8 @@ gem 'news-api'
 gem 'koala'
 gem 'open-uri'
 gem 'twitter'
+gem 'httparty'
+gem 'rest-client'
 
 # Use Sass to process CSS
 # gem "sassc-rails"
