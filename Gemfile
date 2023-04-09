@@ -52,6 +52,7 @@ gem 'koala'
 gem 'open-uri'
 gem 'twitter'
 gem 'rest-client'
+gem 'whenever'
 
 # Use Sass to process CSS
 # gem "sassc-rails"

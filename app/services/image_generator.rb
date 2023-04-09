@@ -46,7 +46,7 @@ class ImageGenerator
     response = @openai.completions(
         parameters: {
             model: "text-davinci-003",
-            prompt: portrait,
+            prompt: prompt,
             temperature: 0.8,
             max_tokens: 500,
         })
