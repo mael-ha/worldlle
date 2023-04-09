@@ -14,9 +14,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_023048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "news_summaries", force: :cascade do |t|
-    t.string "summary"
+  create_table "world_summaries", force: :cascade do |t|
+    t.string "keywords"
+    t.string "story"
+    t.string "image_prompt"
     t.string "image_url"
+    t.string "last_country_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

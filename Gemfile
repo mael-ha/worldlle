@@ -45,6 +45,14 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem 'dotenv-rails'
+gem 'httparty'
+gem 'ruby-openai'
+gem 'news-api'
+gem 'koala'
+gem 'open-uri'
+gem 'twitter'
+gem 'rest-client'
+gem 'whenever'
 
 # Use Sass to process CSS
 # gem "sassc-rails"
@@ -74,3 +82,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "dockerfile-rails", ">= 1.2", :group => :development
