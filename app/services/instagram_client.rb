@@ -36,13 +36,14 @@ class InstagramClient
       "#{BASE_URI}/#{@user_id}/media",
       query: {
         image_url: @image_url,
-        access_token: @@access_token
+        access_token: @access_token
       }
     )
     response['id']
   end
 
   def publish_media
+    debugger
     response = HTTParty.post(
       "#{BASE_URI}/#{@user_id}/media_publish",
       query: {

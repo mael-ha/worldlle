@@ -65,7 +65,6 @@ class SocialPoster
       file = File.open(file_path)
     
       response = RestClient.post(url, { file: file }, { 'Content-Type' => 'multipart/form-data', 'Authorization' => "Bearer #{@twitter_bearer_token}" })
-      debugger
       file.close
     
       raise "Error uploading media: #{response.body}" unless response.code == 201
