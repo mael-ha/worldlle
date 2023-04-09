@@ -1,0 +1,2 @@
+class NewsSummary < ApplicationRecord
+end
