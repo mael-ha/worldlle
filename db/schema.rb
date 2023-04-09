@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_023048) do
     t.string "story"
     t.string "image_prompt"
     t.string "image_url"
+    t.string "last_country_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

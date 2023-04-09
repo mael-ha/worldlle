@@ -5,6 +5,7 @@ class CreateWorldSummaries < ActiveRecord::Migration[7.0]
       t.string :story
       t.string :image_prompt
       t.string :image_url
+      t.string :last_country_code
 
       t.timestamps
     end

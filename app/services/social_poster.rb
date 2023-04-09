@@ -4,7 +4,8 @@ require 'koala'
 require 'open-uri'
 
 class SocialPoster
-    def initialize(world_summary)
+    def initialize(world_summary_id)
+        world_summary = WorldSummary.find(world_summary_id)
         @image_url = world_summary.image_url
         access_token = ""
         @user_id = ""
@@ -14,8 +15,8 @@ class SocialPoster
     end
 
     def call
-        download_image
-        #post_to_instagram
+        #download_image
+        post_to_instagram
         #post_to_twitter
     end
 
@@ -26,15 +27,10 @@ class SocialPoster
         end
     end
   
-    def post_to_instagram(prompt, )
-
-    
-
-    # Save the image locally
-
-
+    def post_to_instagram
     # Upload the image to the Instagram Creator account's media container
-    response = @graph.put_connections(@user_id, "media", image_url: File.expand_path('worldlle_tmp.jpg'), caption: "[#{@date}] - #{@caption}")
+    #response = @graph.put_connections(@user_id, "media", image_url: File.expand_path('worldlle_tmp.jpg'), caption: "[#{@date}] - #{@caption}")
+    response = @graph.put_connections(@user_id, "media", image_url: @image_url, caption: "[#{@date}] - #{@caption}")
 
     # Get the resulting media ID
     media_id = response['id']
