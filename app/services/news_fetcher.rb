@@ -17,7 +17,7 @@ class NewsFetcher
 
     def call
         fetch_top_10_world_headlines
-        fetch_headlines_from_all_countries
+        #fetch_headlines_from_all_countries
         @world_summary
     end
 

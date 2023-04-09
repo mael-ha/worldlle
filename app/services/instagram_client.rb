@@ -15,7 +15,6 @@ class InstagramClient
     @container_id = create_container
     publish_media
   rescue StandardError => e
-    debugger
   end
 
   private
@@ -36,23 +35,22 @@ class InstagramClient
       "#{BASE_URI}/#{@user_id}/media",
       query: {
         image_url: @image_url,
-        access_token: @access_token
+        access_token: @access_token,
+        caption: @caption,
       }
     )
     response['id']
   end
 
   def publish_media
-    debugger
     response = HTTParty.post(
       "#{BASE_URI}/#{@user_id}/media_publish",
       query: {
         creation_id: @container_id,
-        caption: @caption,
         access_token: @access_token
       }
     )
-
+    puts "Request body sent to Instagram API: #{response.request}"
     response['id']
   end
 end

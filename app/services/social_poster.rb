@@ -11,13 +11,14 @@ class SocialPoster
     BASE_URI = 'https://api.twitter.com/2'
 
     def initialize(world_summary_id)
-        world_summary = WorldSummary.find(world_summary_id)
-        @image_url = world_summary.image_url
+        @keywords_only = ENV['KEYWORDS_ONLY'] == 'true'
+        @world_summary = WorldSummary.find(world_summary_id)
+        @image_url = @world_summary.image_url
         access_token = ""
         @user_id = ""
         @graph = Koala::Facebook::API.new(access_token)
-        @image_prompt = world_summary.image_prompt
-        @date = (world_summary.created_at - 1.day).strftime("%d/%m/%Y")
+        @image_prompt = @world_summary.image_prompt
+        @date = (@world_summary.created_at - 1.day).strftime("%d/%m/%Y")
         @image_path = "tmp/worldlle_tmp.jpg"
         @twitter_bearer_token = ENV['TWITTER_BEARER_TOKEN']
     end
@@ -38,7 +39,12 @@ class SocialPoster
     end
 
     def post_to_instagram
-      @caption = "[#{@date}] #{@image_prompt} #worldlle"
+      keywords = JSON.parse(@world_summary.keywords).split(", ")
+      @caption = if @keywords_only
+        "#{@date}. #{keywords} #worldlle"
+      else
+        "#{@date}. #{@image_prompt} #worldlle"
+      end
       InstagramClient.new.post_to_instagram(@caption, @image_url)
     end
 

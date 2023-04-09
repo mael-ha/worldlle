@@ -10,9 +10,11 @@ class ImageGenerator
     }
 
   def initialize(world_summary_id)
+    @keywords_only = ENV['KEYWORDS_ONLY'] == 'true'
     @openai = OpenAI::Client.new
     @world_summary = WorldSummary.find(world_summary_id)
     @keywords = JSON.parse(@world_summary.keywords)
+    @keywords_stringified = @keywords.join(", ")
   end
 
   def call
@@ -39,11 +41,12 @@ class ImageGenerator
   def generate_image_prompt
     return if @world_summary.image_prompt.present?
 
-    prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Depict an ultra realistic scene based on today's story, with a maximum of 260 characters. Describe the scene as if you were there. Be very descriptive about what you see, give a lot of details. Add adjectives to make sure it is ultra realistic."
+    prompt = "You are a modern digital artist using AI to express your ideas. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Depict an ultra realistic scene based on today's story, with a maximum of 260 characters. Describe the scene as if you were there. Be very descriptive about what you see, give a lot of details. Give context of the image, if its a painting, a 3D, a photo, with lot of details. Add adjectives to make sure it is ultra realistic."
+    portrait = "You are a portrait describer. You love to imagine a detailed scene from a story. You get your inspiration from a story wrote by a friend. I am this friend. You always describe scenes so we see it as realistic digital art. Here is today's story: #{@story}. Depict an ultra realistic scene based on today's story, with a maximum of 260 characters. Describe the scene as if you were there. Be very descriptive about what you see, give a lot of details. Give context of the portrait with lot of details. Add adjectives to make sure it is ultra realistic."
     response = @openai.completions(
         parameters: {
             model: "text-davinci-003",
-            prompt: prompt,
+            prompt: portrait,
             temperature: 0.8,
             max_tokens: 500,
         })
@@ -54,7 +57,8 @@ class ImageGenerator
   def generate_image
     return if @world_summary.image_url.present?
     
-    response = @openai.images.generate(parameters: { prompt: @image_prompt, size: SIZE[:lg] })
+    prompt = @keywords_only ? "Ultra realistic photo portrait of a world citizen: #{@keywords_stringified}" : @image_prompt
+    response = @openai.images.generate(parameters: { prompt: prompt, size: SIZE[:lg] })
     @image_url = response.dig("data", 0, "url")
     @world_summary.update!(image_url: @image_url)
   end
