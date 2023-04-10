@@ -39,18 +39,25 @@ class SocialPoster
     end
 
     def post_to_instagram
-      keywords = JSON.parse(@world_summary.keywords).split(", ")
-      @caption = if @keywords_only
-        "#{@date}. #{keywords} #worldlle"
-      else
-        "#{@date}. #{@image_prompt} #worldlle"
+      keywords = @world_summary.keywords
+      # @caption = if @keywords_only
+      #   "#{@date}. #{keywords} #worldlle"
+      # else
+      #   "#{@date}. #{@image_prompt} #worldlle"
+      # end
+      # debugger
+      @caption = "#{@date}\n\n"
+      n = 1
+      @world_summary.headlines.each do |headline|
+        @caption += "#{n}. #{headline}\n"
+        n += 1
       end
+      @caption += "\n\n « #{@image_prompt} » #worldlle"
       InstagramClient.new.post_to_instagram(@caption, @image_url)
     end
 
     def post_to_twitter
-        # Upload the image to Twitter
-        # Post the tweet with the image and prompt as the text
+      # Api v1.1 / error: need upgrade access to use API v1.1...
         begin
             tweet = TwitterClient.update_with_media("[#{@date}] - #{@caption}", File.new(@image_path))
         rescue Twitter::Error => e
@@ -59,10 +66,9 @@ class SocialPoster
     end
   
     def post_to_twitter_v2
-      # Upload the media to Twitter
+      # Api v2 / Custom `client`
       media_key = upload_media(@image_path)
   
-      # Post the tweet with the media
       tweet = create_tweet("[#{@date}] - #{@caption} https://twitter.com/intent/tweet?hashtags=WorldllE", media_key)
     end
   
