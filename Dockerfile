@@ -24,7 +24,9 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential libpq-dev
+    apt-get install --no-install-recommends -y build-essential libpq-dev \
+# install cron for cronjobs
+    cron
 
 # Install application gems
 COPY --link Gemfile Gemfile.lock ./
@@ -41,7 +43,10 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE=DUMMY ./bin/rails assets:precompile
 
-
+# Create empty crontab file
+RUN crontab -l | { cat; echo ""; } | crontab -
+# Update crontab file using whenever command
+RUN bundle exec whenever --update-crontab
 # Final stage for app image
 FROM base
 
