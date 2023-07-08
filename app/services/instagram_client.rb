@@ -5,6 +5,7 @@ class InstagramClient
   BASE_URI = 'https://graph.facebook.com/v16.0'
 
   def initialize
+    @instagram_id = 785_252_483_152_964
     @access_token = ENV['GRAPH_API_ACCESS_TOKEN']
     @user_id = ENV['INSTAGRAM_BUSINESS_ID']
   end
@@ -15,6 +16,27 @@ class InstagramClient
     @container_id = create_container
     publish_media
   rescue StandardError => e
+  end
+
+  def get_auth
+    url = 'https://api.instagram.com/oauth/authorize'
+    body = {
+      client_id: @instagram_id,
+      rredirect_uri: 'https://worldlle.com/auth/',
+      scope: 'user_profile,user_media',
+      response_type: 'code'
+    }
+    response = HTTParty.get(url, query: body)
+    puts response
+  end
+
+  def refresh_access_token
+    url = "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=#{@access_token}"
+    body = {
+      grand_type: 'ig_refresh_token',
+      access_token: @access_token
+    }
+    response = HTTParty.get(url)
   end
 
   private
@@ -36,7 +58,7 @@ class InstagramClient
       query: {
         image_url: @image_url,
         access_token: @access_token,
-        caption: @caption,
+        caption: @caption
       }
     )
     response['id']
