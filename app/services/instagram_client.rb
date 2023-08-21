@@ -6,7 +6,7 @@ class InstagramClient
 
   def initialize
     @instagram_id = 785_252_483_152_964
-    @access_token = ENV['GRAPH_API_ACCESS_TOKEN']
+    @access_token = ENV['LONG_GRAPH_API_ACCESS_TOKEN'].blank? ? ENV['TEMP_GRAPH_API_ACCESS_TOKEN'] : ENV['LONG_GRAPH_API_ACCESS_TOKEN']
     @user_id = ENV['INSTAGRAM_BUSINESS_ID']
   end
 
@@ -37,6 +37,28 @@ class InstagramClient
       access_token: @access_token
     }
     response = HTTParty.get(url)
+  end
+
+  def get_long_lived_user_access_token(temporary_token = ENV['LONG_GRAPH_API_ACCESS_TOKEN'])
+    url = "#{BASE_URI}/oauth/access_token"
+    query = {
+      grant_type: 'fb_exchange_token',
+      client_id: @instagram_id,
+      client_secret: ENV['APP_SECRET'], # Make sure to set this in your environment variables
+      fb_exchange_token: temporary_token
+    }
+    response = HTTParty.get(url, query:)
+
+    raise "Failed to exchange temporary token: #{response['error']['message']}" unless response.code == 200
+
+    @access_token = response['access_token']
+    @duration = response['expires_in'].to_i
+    @expires_at = Time.now + @duration.seconds
+    token = {
+      access_token: @access_token,
+      duration: @duration,
+      expires_at: @expires_at
+    }
   end
 
   private
