@@ -15,7 +15,7 @@ class ImageGenerator
     @world_summary = WorldSummary.find(world_summary_id)
     @keywords = @world_summary.keywords
     @keywords_stringified = @keywords.join(', ')
-    @mode = :gpt_4 # or :davinci
+    @mode = :davinci # or :gpt_4
   end
 
   def call
