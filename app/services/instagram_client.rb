@@ -4,9 +4,10 @@ class InstagramClient
   include HTTParty
   BASE_URI = 'https://graph.facebook.com/v16.0'
 
-  def initialize
+  def initialize(use_long_lived_access_token = true)
     @instagram_id = 785_252_483_152_964
-    @access_token = ENV['LONG_GRAPH_API_ACCESS_TOKEN'].blank? ? ENV['TEMP_GRAPH_API_ACCESS_TOKEN'] : ENV['LONG_GRAPH_API_ACCESS_TOKEN']
+    token_type = use_long_lived_access_token ? 'LONG' : 'TEMP'
+    @access_token = ENV["#{token_type}_GRAPH_API_ACCESS_TOKEN"]
     @user_id = ENV['INSTAGRAM_BUSINESS_ID']
   end
 
@@ -31,7 +32,7 @@ class InstagramClient
   end
 
   def refresh_access_token
-    url = "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=#{@access_token}"
+    url = "https://api.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=#{@access_token}"
     body = {
       grand_type: 'ig_refresh_token',
       access_token: @access_token
@@ -39,14 +40,26 @@ class InstagramClient
     response = HTTParty.get(url)
   end
 
-  def get_long_lived_user_access_token(temporary_token = ENV['LONG_GRAPH_API_ACCESS_TOKEN'])
-    url = "#{BASE_URI}/oauth/access_token"
+  def long_lived_access_token(action = :get)
+    case action
+    when :get
+      grant_type = 'ig_exchange_token'
+      endpoint = 'access_token'
+      access_token = ENV['TEMP_GRAPH_API_ACCESS_TOKEN']
+      client_secret = ENV['GRAPH_API_SECRET']
+      url = 'https://graph.instagram.com/access_token'
+      # url = "https://graph.facebook.com/#{endpoint}"
+    when :refresh
+      grant_type = 'ig_refresh_token'
+      endpoint = 'refresh_access_token'
+      access_token = ENV['LONG_GRAPH_API_ACCESS_TOKEN']
+      url = "https://api.instagram.com/#{endpoint}"
+    end
     query = {
-      grant_type: 'fb_exchange_token',
-      client_id: @instagram_id,
-      client_secret: ENV['APP_SECRET'], # Make sure to set this in your environment variables
-      fb_exchange_token: temporary_token
+      grant_type:,
+      access_token:
     }
+    query.merge!(client_secret:) if action == :get
     response = HTTParty.get(url, query:)
 
     raise "Failed to exchange temporary token: #{response['error']['message']}" unless response.code == 200
