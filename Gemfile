@@ -53,6 +53,7 @@ gem 'open-uri'
 gem 'twitter'
 gem 'rest-client'
 gem 'whenever'
+gem 'sidekiq'
 
 # Use Sass to process CSS
 # gem "sassc-rails"

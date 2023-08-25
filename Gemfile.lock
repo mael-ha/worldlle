@@ -84,6 +84,7 @@ GEM
       xpath (~> 3.2)
     chronic (0.10.2)
     concurrent-ruby (1.2.2)
+    connection_pool (2.4.1)
     crass (1.0.6)
     date (3.3.3)
     debug (1.7.2)
@@ -222,6 +223,8 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     redis (4.8.1)
+    redis-client (0.14.1)
+      connection_pool
     regexp_parser (2.7.0)
     reline (0.3.3)
       io-console (~> 0.5)
@@ -239,6 +242,11 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sidekiq (7.0.9)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.11.0)
     simple_oauth (0.3.1)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
@@ -322,6 +330,7 @@ DEPENDENCIES
   rest-client
   ruby-openai
   selenium-webdriver
+  sidekiq
   sprockets-rails
   stimulus-rails
   tailwindcss-rails
