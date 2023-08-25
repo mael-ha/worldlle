@@ -1,7 +1,8 @@
 namespace :worldlle do
     desc "run"
     task run: :environment do
-        WorldlleBot.new.call
+        InstagramPostJob.perform_now
+        # WorldlleBot.new.call
     end
 
     task time: :environment do
